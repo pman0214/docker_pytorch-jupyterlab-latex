@@ -10,4 +10,8 @@
 
 Copyright (c) 2020, Shigemi ISHIDA
 
-The files in this repository is released under the BSD 3-clause license. See ``LICENSE``.
+* `Dockerfile` is released under the BSD 3-clause license.
+  See `LICENSE_BSD-3Clause`.
+* `docker-compose.yml` and `docker-compose_nvidia.yml` are released
+  under the MIT license.
+  See `LICENSE_MIT`.
