@@ -25,9 +25,9 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 RUN set -x && \
 	apt update && \
-	apt install -y texlive-lang-cjk texlive-fonts-recommended texlive-fonts-extra dvipng
+	apt install -y texlive-lang-cjk texlive-fonts-recommended texlive-fonts-extra dvipng cm-super
 
-VOLUME /root
-WORKDIR /root
+VOLUME /app
+WORKDIR /app
 
 CMD ["jupyter", "lab", "--allow-root"]
