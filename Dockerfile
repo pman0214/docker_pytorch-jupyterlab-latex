@@ -1,4 +1,4 @@
-# Copyright (c) 2020, Shigemi ISHIDA
+# Copyright (c) 2020-2021, Shigemi ISHIDA
 # 
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -19,13 +19,16 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-FROM pman0214/pytorch_jupyterlab
+ARG VER=latest
+FROM pman0214/pytorch_jupyterlab:${VER}
 
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN set -x && \
-	apt update && \
-	apt install -y texlive-lang-cjk texlive-fonts-recommended texlive-fonts-extra dvipng cm-super
+	apt-get update && \
+	apt-get install -y texlive-lang-cjk texlive-fonts-recommended texlive-fonts-extra dvipng cm-super && \
+	apt-get clean && \
+	rm -rf /var/lib/apt/lists/*
 
 VOLUME /app
 WORKDIR /app
