@@ -20,9 +20,9 @@ docker run -d --rm -v $PWD:/app -p 8888:8888 pman0214/pytorch_jupyterlab_latex:v
 1. Enter password `jupyter` to login and enjoy!
 1. Shutdown jupyterlab from the `File` menu to stop and destroy the container.
 
-If you want to use CUDA, please run cuda version of the image. To use pytorch 1.9.0 with CUDA 11.1 with CuDNN 8, for example, run as:
+If you want to use CUDA, please run cuda version of the image. To use pytorch 1.13.1 with CUDA 11.6 with CuDNN 8, for example, run as:
 ```
-docker run --rm -d -v $PWD:/app -p 8888:8888 --gpus=all pman0214/pytorch_jupyterlab_latex:1.9.0-cuda11.1-cudnn8-devel
+docker run --rm -d -v $PWD:/app -p 8888:8888 --gpus=all pman0214/pytorch_jupyterlab_latex:1.13.1-cuda11.6-cudnn8-devel
 ```
 
 Please refer to [tags](https://hub.docker.com/r/pman0214/pytorch_jupyterlab_latex/tags) to lookup images supporting CUDA. CUDA is available only on linux/amd64.
@@ -34,13 +34,13 @@ Note that CUDA image is only available on linux/amd64.
 
 To build an image from a specific version of the base image, please specify the `VER` argument with `--build-arg` option as:
 ```
-export TARGET_VER=1.9.0-cuda11.1-cudnn8-devel
+export TARGET_VER=1.13.1-cuda11.6-cudnn8-devel
 docker build -t "pytorch_jupyterlab_latex:${TARGET_VER}" --build-arg VER=${TARGET_VER} .
 ```
 
 ## Copyright, License
 
-Copyright (c) 2020-2021, Shigemi ISHIDA
+Copyright (c) 2020-2023, Shigemi ISHIDA
 
 `Dockerfile` is released under the MIT license.
 See `LICENSE`.
