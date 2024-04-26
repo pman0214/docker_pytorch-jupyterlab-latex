@@ -1,0 +1,107 @@
+name: docker build for CUDA
+
+permissions:
+  contents: write
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: 'Release tag'
+        required: true
+        type: string
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Login to docker hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Set docker metadata
+        id: docker_metadata
+        uses: docker/metadata-action@v5
+        with:
+          images: |
+            pman0214/pytorch_jupyterlab
+          tags: |
+            type=raw,enable=true,value=${{ inputs.release_tag }}
+            type=raw,enable=true,value=latest-gpu
+          flavor: |
+            latest=false
+      - name: Setup docker buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v3
+        with:
+          platforms: linux/amd64
+      - name: Check space before cleanup
+        run: df -h
+      - name: Cleaning
+        run: |
+          docker images
+          sudo rm -rf "/opt/ghc" || true
+          sudo rm -rf "/usr/share/dotnet" || true
+          sudo rm -rf "$AGENT_TOOLSDIRECTORY" || true
+          sudo rm -rf "/usr/local/lib/android" || true
+          sudo rm -rf "/usr/local/share/boost" || true
+          docker rmi $(docker image ls -q --filter "reference=node*")
+          docker rmi $(docker image ls -q --filter "reference=debian*")
+          docker rmi $(docker image ls -q --filter "reference=alpine*")
+          docker rmi $(docker image ls -q --filter "reference=ubuntu:22.04")
+      - name: apt-get remove cleanup
+        run: |
+          sudo apt-get remove --purge -y \
+            ansible* \
+            aria2* \
+            aspnetcore* \
+            azure-cli* \
+            cabal* \
+            clang* \
+            dotnet-* \
+            firefox* \
+            gfortran-* \
+            ghc* \
+            google-chrome-stable* \
+            google-cloud-sdk* \
+            heroku* \
+            imagemagick* \
+            javascript* \
+            kubectl* \
+            llvm* \
+            mono* \
+            mysql* \
+            nginx* \
+            node* \
+            npm* \
+            nuget* \
+            php* \
+            postgresql* \
+            powershell* \
+            rpm* \
+            ruby* \
+            sqlite3* \
+            subversion \
+            temurin* \
+            tmux* \
+            vim* \
+            yarn*
+          sudo apt-get autoremove -y >/dev/null 2>&1 || true
+          sudo apt-get autoclean -y >/dev/null 2>&1 || true
+      - name: Check space after cleanup
+        run: df -h
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          platforms: linux/amd64
+          build-args: |
+            VER=${{ inputs.release_tag }}
+          push: true
+          tags: ${{ steps.docker_metadata.outputs.tags }}
+          labels: ${{ steps.docker_metadata.outputs.labels }}
