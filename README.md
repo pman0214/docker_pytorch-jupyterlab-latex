@@ -34,7 +34,7 @@ docker build -t "pytorch_jupyterlab_latex:${TARGET_VER}" --build-arg VER=${TARGE
 
 ## Copyright, License
 
-Copyright (c) 2020-2023, Shigemi ISHIDA
+Copyright (c) 2020-2024, Shigemi ISHIDA
 
 `Dockerfile` is released under the MIT license.
 See `LICENSE`.
