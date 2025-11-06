@@ -27,14 +27,14 @@ Dockerfile supports multi-architecture build for linux/amd64 and linux/arm64. No
 
 To build an image from a specific version of the base image, please specify the `VER` argument with `--build-arg` option as:
 ```
-export TARGET_VER=2.3.0
+export TARGET_VER=2.9.0
 docker build -t "pytorch_jupyterlab_latex:${TARGET_VER}" --build-arg VER=${TARGET_VER} .
 ```
 
 
 ## Copyright, License
 
-Copyright (c) 2020-2024, Shigemi ISHIDA
+Copyright (c) 2020-2025, Shigemi ISHIDA
 
 `Dockerfile` is released under the MIT license.
 See `LICENSE`.
